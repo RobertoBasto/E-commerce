@@ -293,6 +293,13 @@ header{
     .cart{
         width: 320px;
     }
+    .sc-container h1 {
+      font-size: 1.1rem;
+    }
+    .sc-container p{
+        width: 90%;
+        font-size: 0.9rem;
+    }
 }
 @media(max-width:360px){
    .shop{

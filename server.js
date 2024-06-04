@@ -16,9 +16,17 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.sendFile("index.html",{root: "public"});
 });
-
+//Success
+app.get("/success", (req, res) => {
+    res.sendFile("success.html",{root: "public"});
+});
+//Cancel
+app.get("/cancel", (req, res) => {
+    res.sendFile("cancel.html",{root: "public"});
+});
 //Stripe
 let stripeGateway = stripe(process.env.stripe_api);
+let DOMAIN = process.env.DOMAIN;
 
 app.post("/stripe-checkout", async(req, res) => {
  const lineItems = req.body.items.map((item) => {
@@ -42,10 +50,15 @@ app.post("/stripe-checkout", async(req, res) => {
 
   //Create Checkout Session
   const session = await stripeGateway.checkout.sessions.create({
-    payment_method_type: ["card"],
+    payment_method_types: ["card"],
     mode: "payment",
-    success_url: "${DOMAIN}/success",
-  })
+    success_url: `${DOMAIN}/success`,
+    cancel_url: `${DOMAIN}/cancel`,
+    line_items: lineItems,
+    //Asking Address In stripe Checkout Page
+    billing_address_collection: "required",
+  });
+  res.json(session.url);
 });
 
 app.listen(3000, () =>{
