@@ -37,6 +37,7 @@ app.post("/stripe-checkout", async(req, res) => {
     quantity: item.quantity,
  };
  });
+ 
   console.log("lineItems:", lineItems);
 
   //Create Checkout Session
